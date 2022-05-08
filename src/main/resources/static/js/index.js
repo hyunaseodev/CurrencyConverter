@@ -7,8 +7,7 @@ var main = {
 function selectRecipientCountry() {
   clearFields();
 
-  var toCurrency = $("#toCurrency option:selected").val();
-  findExchangeRate(toCurrency);
+  findExchangeRate($("#toCurrency option:selected").val());
 }
 
 function findExchangeRate(toCurrency) {
@@ -22,14 +21,9 @@ function findExchangeRate(toCurrency) {
         setExchangeRateData(result);
     },
     error: function(error){
-      alert("환율 데이터를 가져오지 못 했습니다.");
+      alert("오류가 발생했습니다.");
     }
   })
-}
-
-function setExchangeRateData(resultData) {
-  $("#exchangeRate").text(formatNumber(resultData.exchangeRate));
-  $("#exchangeRateUnit").text(resultData.toCurrency + "/" + resultData.fromCurrency);
 }
 
 function submitReceivableAmount() {
@@ -43,15 +37,13 @@ function submitReceivableAmount() {
 
   $.ajax({
     type: 'GET',
-    url: '/exchangeRate',
-    data: {'toCurrency': toCurrency},
+    url: '/receivableAmount',
+    data: {'toCurrency': toCurrency, 'sendAmount': sendAmount},
     dataType: 'json',
     contentType: "application/x-www-form-urlencoded; charset=UTF-8;",
     success: function(result){
         setExchangeRateData(result);
-
-        var receivableAmount = calculateReceivableAmount(result.exchangeRate, sendAmount);
-        setReceivableAmount(receivableAmount, toCurrency);
+        setReceivableAmount(result);
     },
     error: function(){
       alert("오류가 발생했습니다.");
@@ -59,15 +51,16 @@ function submitReceivableAmount() {
   })
 }
 
-function calculateReceivableAmount(exchangeRate, sendAmount) {
-  return formatNumber(exchangeRate * sendAmount);
+function setExchangeRateData(resultData) {
+  $("#exchangeRate").text(formatNumber(resultData.exchangeRate));
+  $("#exchangeRateUnit").text(resultData.toCurrency + "/" + resultData.fromCurrency);
 }
 
-function setReceivableAmount(receivableAmount, toCurrency) {
-  $("#receivableAmount").text("수취금액은 " + receivableAmount + " " + toCurrency + " 입니다.");
+function setReceivableAmount(resultData) {
+  $("#receivableAmount").text("수취금액은 " + formatNumber(resultData.receivableAmount) + " " + resultData.toCurrency + " 입니다.");
 }
 
-function formatRemittanceAmount(numberValue) {
+function formatSendAmount(numberValue) {
   clearReceivableAmountField();
 
   $("#sendAmount").val(formatNumber(numberValue));
@@ -99,6 +92,7 @@ function clearFields() {
   $("#sendAmount").value = "";
   $("#receivableAmount").text("");
 }
+
 function clearReceivableAmountField() {
   $("#receivableAmount").text("");
 }

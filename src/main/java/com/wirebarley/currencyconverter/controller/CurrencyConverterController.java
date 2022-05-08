@@ -28,9 +28,13 @@ public class CurrencyConverterController {
 
     @ResponseBody
     @GetMapping(value = "/exchangeRate", params = "toCurrency")
-    public CurrencyConverterDto findExchangeRateByCountry(final String toCurrency)
-        throws Exception {
-        log.info("toCurrency = {}", toCurrency);
+    public CurrencyConverterDto findExchangeRateByCountry(final String toCurrency) throws Exception {
         return currencyConverterService.findExchangeRateByCountry(toCurrency);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/receivableAmount", params = {"toCurrency", "sendAmount"})
+    public CurrencyConverterDto calculateReceivableAmount(final String toCurrency, final String sendAmount) throws Exception {
+        return currencyConverterService.calculateReceivableAmount(toCurrency, sendAmount);
     }
 }
