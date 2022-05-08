@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>환율 계산</title>
+</head>
+<body>
+<div>
+  <div>
+    <H1>환율 계산</H1>
+  </div>
+  <div>
+    <table>
+      <tbody>
+        <tr>
+          <td colspan="2"><p>송금국가: </p></td>
+          <td><p>미국(USD)</p></td>
+        </tr>
+        <tr>
+          <td colspan="2"><p>수취국가: </p></td>
+          <td>
+            <select id="toCurrency" onchange="selectRecipientCountry()" th:field="*{recipientCountry}">
+              <option th:each="recipientCountry : ${T(com.wirebarley.currencyconverter.domain.vo.RecipientCountryEnum).values()}"
+                      th:value="${recipientCountry}"
+                      th:text="${recipientCountry.displayValue}">
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><p>환율: </p></td>
+          <td colspan="2"><span id="exchangeRate"></span>&nbsp<span id="exchangeRateUnit"></span></td>
+        </tr>
+        <tr>
+          <td colspan="2"><p>송금액</p></td>
+          <td><input id="sendAmount" type="text" onKeyup="this.value=this.value.replace(/[^-\.0-9]/g,'');" onchange="formatRemittanceAmount(this.value)"/><span>USD</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button onclick="submitReceivableAmount()">Submit</button>
+  </div>
+  <span id="receivableAmount"></span>
+</div>
+<script type="text/javascript" th:src="@{js/jquery-3.6.0.min.js}"></script>
+<script type="text/javascript" th:src="@{js/index.js}"></script>
+</body>
+</html>

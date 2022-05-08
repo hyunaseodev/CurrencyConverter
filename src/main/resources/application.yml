@@ -1,0 +1,4 @@
+currency:
+  access_key: ee50cd7cc73c9b7a7bb3d9617cfb6b9c
+  base_url: http://api.currencylayer.com/
+  endpoint: live
