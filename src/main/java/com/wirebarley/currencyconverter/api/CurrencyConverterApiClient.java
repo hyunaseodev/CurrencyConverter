@@ -5,16 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wirebarley.currencyconverter.dto.CurrencyConverterDto;
 import com.wirebarley.currencyconverter.exception.ExchangeRateNotFoundException;
 import java.math.BigDecimal;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-@RestController
+@Service
 public class CurrencyConverterApiClient {
 
     private final String ACCESS_KEY;
@@ -27,8 +25,6 @@ public class CurrencyConverterApiClient {
         this.BASE_URL = BASE_URL;
         this.ENDPOINT = ENDPOINT;
     }
-
-    static CloseableHttpClient httpClient = HttpClients.createDefault();
 
     public CurrencyConverterDto findExchangeRateByCountry(final String toCurrency) throws Exception {
         RestTemplate restTemplate = new RestTemplate();

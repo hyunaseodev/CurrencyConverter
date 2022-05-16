@@ -11,5 +11,5 @@ public enum RecipientCountryEnum {
     JPY("일본(JPY)"),
     PHP("필리핀(PHP)");
 
-    private final String displayValue;
+    private String displayValue;
 }
